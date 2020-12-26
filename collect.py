@@ -475,11 +475,11 @@ class LinkedMediaHelper:
         Returns:
             file_path (string): path to downloaded video or None if no image was downloaded
         """
-        # First check if URL is reference to another reddit post (i.e. a cross-post)
-        regex = r"^/r/.*"
+        # First check if URL starts with http:// or https://
+        regex = r"^https?://"
         match = re.search(regex, img_url, flags=0)
-        if match:
-            self.logger.info('Post links to another reddit submission, i.e. is a cross-post')
+        if not match:
+            self.logger.info('Post link is not a full link: %s', img_url)
             return None
 
         # Check if URL is an image or MP4 file, based on the MIME type

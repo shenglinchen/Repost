@@ -22,7 +22,7 @@ MAX_LEN_TWEET = 280
 MAX_LEN_TOOT = 500
 CODE_VERSION_MAJOR = 2  # Current major version of this code
 CODE_VERSION_MINOR = 15  # Current minor version of this code
-CODE_VERSION_PATCH = 2  # Current patch version of this code
+CODE_VERSION_PATCH = 3  # Current patch version of this code
 
 
 def get_caption(submission, max_len, addhashtags=None):
@@ -31,9 +31,17 @@ def get_caption(submission, max_len, addhashtags=None):
     # Create string of hashtags
     hashtag_string = ''
     promo_string = ''
-    hashtags_for_subreddit = [x.strip() for x in
-                              addhashtags.split(',')] if addhashtags is not None else None
-    hashtags_for_post = hashtags_for_subreddit + HASHTAGS if addhashtags is not None else HASHTAGS
+
+    logger.debug('HASHTAGS: %s', HASHTAGS)
+    logger.debug('addhashtags: %s', addhashtags)
+
+    if addhashtags is None:
+        hashtags_for_post = HASHTAGS
+    else:
+        hashtags_for_post = [x.strip() for x in addhashtags.split(',')]
+        if HASHTAGS is not None:
+            hashtags_for_post += HASHTAGS
+
     if hashtags_for_post:
         for tag in hashtags_for_post:
             # Add hashtag to string, followed by a space for the next one
@@ -195,10 +203,11 @@ def make_post(posts, duplicate_checker, media_helper):
                             # Log the toot
                             duplicate_checker.log_post(post_id, toot["url"], shared_url,
                                                        attachment.check_sum_high_res)
-                        except BaseException as e:
-                            logger.error('Error while posting toot: %s', e)
+                        except MastodonError as toot_error:
+                            logger.error('Error while posting toot: %s', toot_error)
                             # Log the post anyways
-                            duplicate_checker.log_post(post_id, 'Error while posting toot: %s' % e,
+                            duplicate_checker.log_post(post_id,
+                                                       'Error while posting toot: %s' % toot_error,
                                                        '',
                                                        '')
 
@@ -262,7 +271,7 @@ if config['BotSettings']['Hashtags']:
     HASHTAGS = config['BotSettings']['Hashtags']
     HASHTAGS = [x.strip() for x in HASHTAGS.split(',')]
 else:
-    HASHTAGS = ''
+    HASHTAGS = None
 # Settings related to promotional messages
 PROMO_EVERY = int(config['PromoSettings']['PromoEvery'])
 PROMO_MESSAGE = config['PromoSettings']['PromoMessage']
@@ -459,7 +468,7 @@ while True:
 
     reddit_posts = {}
     for subreddit, hashtags in SUBREDDITS:
-        reddit_posts[hashtags] = reddit.get_reddit_posts(subreddit)
+        reddit_posts[hashtags] = reddit.get_reddit_posts(subreddit, limit=POST_LIMIT)
     make_post(reddit_posts, post_recorder, imgur)
 
     if MASTODON_DELETE_AFTER_DAYS > 0:
