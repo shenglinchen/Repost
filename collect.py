@@ -81,7 +81,8 @@ class RedditHelper:
                 # It worked, so save the keys to a file
                 reddit_config['Reddit'] = {'Agent': reddit_agent,
                                            'ClientSecret': reddit_client_secret,
-
+                                            'UserName': reddit_user_name,
+                                            'password': reddit_password
                                            }
                 with open(config_file, 'w') as new_reddit_secrets_file:
                     reddit_config.write(new_reddit_secrets_file)
