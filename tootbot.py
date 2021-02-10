@@ -298,6 +298,10 @@ MASTODON_DELETE_AFTER_DAYS = int(config['Mastodon']['DeleteAfterDays'])
 
 SUBREDDITS = config.items('Subreddits')
 
+
+POST_TO_REDDIT = bool(
+    distutils.util.strtobool(config['Reddit']['PostToReddit']))
+
 # Check for updates
 try:
     response = requests.get(
@@ -428,6 +432,7 @@ if POST_TO_MASTODON is True:
             logger.error('Error while logging into Mastodon: %s', mastodon_error)
             logger.error('Tootbot cannot continue, now shutting down')
             sys.exit(1)
+# 
 # Set the command line window title on Windows
 if os.name == 'nt':
     try:
