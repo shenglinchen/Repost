@@ -290,6 +290,8 @@ POST_TO_TWITTER = bool(
     distutils.util.strtobool(config['Twitter']['PostToTwitter']))
 # Mastodon info
 MASTODON_INSTANCE_DOMAIN = config['Mastodon']['InstanceDomain']
+POST_TO_MASTODON = bool(
+    distutils.util.strtobool(config['Mastodon']['PostToMastodon'])
 MASTODON_SENSITIVE_MEDIA = bool(
     distutils.util.strtobool(config['Mastodon']['SensitiveMedia']))
 MASTODON_DELETE_AFTER_DAYS = int(config['Mastodon']['DeleteAfterDays'])
@@ -380,7 +382,7 @@ if POST_TO_TWITTER is True:
             logger.error('Tootbot cannot continue, now shutting down')
             sys.exit(1)
 # Log into Mastodon if enabled in settings
-if MASTODON_INSTANCE_DOMAIN:
+if POST_TO_MASTODON is True:
     if not os.path.exists('mastodon.secret'):
         # If the secret file doesn't exist,
         # it means the setup process hasn't happened yet
@@ -429,7 +431,7 @@ if MASTODON_INSTANCE_DOMAIN:
 # Set the command line window title on Windows
 if os.name == 'nt':
     try:
-        if POST_TO_TWITTER and MASTODON_INSTANCE_DOMAIN:
+        if POST_TO_TWITTER and POST_TO_MASTODON:
             # Set title with both Twitter and Mastodon usernames
             # twitter_username = twitter.me().screen_name
             os.system('title ' + twitter_username + '@twitter.com and ' +
@@ -439,7 +441,7 @@ if os.name == 'nt':
             # Set title with just Twitter username
             twitter_username = twitter.me().screen_name
             os.system('title ' + '@' + twitter_username + ' - Tootbot')
-        elif MASTODON_INSTANCE_DOMAIN:
+        elif POST_TO_MASTODON:
             # Set title with just Mastodon username
             os.system('title ' + mastodon_username + '@' +
                       MASTODON_INSTANCE_DOMAIN + ' - Tootbot')
