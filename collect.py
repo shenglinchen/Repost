@@ -97,7 +97,7 @@ class RedditHelper:
         self.reddit_connection = praw.Reddit(user_agent=self.user_agent,
                                              client_id=reddit_config['Reddit']['Agent'],
                                              client_secret=reddit_config['Reddit']['ClientSecret'],
-                                             user_name=reddit_config["Reddit"]['UsernName']
+                                             user_name=reddit_config["Reddit"]['UsernName'],
                                              password=reddit_config["Reddit"]['password']),
 
     def get_reddit_posts(self, subreddit, limit=10):
