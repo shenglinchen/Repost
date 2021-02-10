@@ -79,7 +79,8 @@ class RedditHelper:
             # Make sure authentication is working
             try:
                 reddit_client = praw.Reddit(user_agent=self.user_agent, client_id=reddit_agent,
-                                            client_secret=reddit_client_secret)
+                                            client_secret=reddit_client_secret, username=reddit_username,
+                                            password=reddit_password)
                 reddit_client.subreddit('announcements')
                 # It worked, so save the keys to a file
                 reddit_config['Reddit'] = {'Agent': reddit_agent,
