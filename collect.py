@@ -73,6 +73,9 @@ class RedditHelper:
             # Whitespaces are stripped from input: https://stackoverflow.com/a/3739939
             reddit_agent = ''.join(input("[ .. ] Enter Reddit agent: ").split())
             reddit_client_secret = ''.join(input("[ .. ] Enter Reddit client secret: ").split())
+            reddit_username = ''.join(input("[ .. ] Enter Reddit username: ").split())
+            reddit_password = ''.join(input("[ .. ] Enter Reddit password: ").split())
+
             # Make sure authentication is working
             try:
                 reddit_client = praw.Reddit(user_agent=self.user_agent, client_id=reddit_agent,
