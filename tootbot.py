@@ -474,7 +474,6 @@ while True:
         healthcheck.check_start()
 
     reddit_posts = {}
-    print(f'{SUBREDDITS}')
     for subreddit, hashtags in SUBREDDITS:
         reddit_posts[hashtags] = reddit.get_reddit_posts(subreddit, limit=POST_LIMIT)
     make_post(reddit_posts, post_recorder, imgur)
