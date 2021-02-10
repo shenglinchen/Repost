@@ -99,10 +99,10 @@ class RedditHelper:
             # Read API keys from secret file
             reddit_config.read(config_file)
 
-        username = reddit_config["Reddit"]['UserName']
-        password = reddit_config["Reddit"]['password']
+        # username = reddit_config["Reddit"]['UserName']
+        # password = reddit_config["Reddit"]['password']
 
-        print(f'{username} =>{password}')
+        # print(f'{username} =>{password}')
 
 
         self.reddit_connection = praw.Reddit(user_agent=self.user_agent,
