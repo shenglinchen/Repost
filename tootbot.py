@@ -291,7 +291,7 @@ POST_TO_TWITTER = bool(
 # Mastodon info
 MASTODON_INSTANCE_DOMAIN = config['Mastodon']['InstanceDomain']
 POST_TO_MASTODON = bool(
-    distutils.util.strtobool(config['Mastodon']['PostToMastodon'])
+    distutils.util.strtobool(config['Mastodon']['PostToMastodon']))
 MASTODON_SENSITIVE_MEDIA = bool(
     distutils.util.strtobool(config['Mastodon']['SensitiveMedia']))
 MASTODON_DELETE_AFTER_DAYS = int(config['Mastodon']['DeleteAfterDays'])
